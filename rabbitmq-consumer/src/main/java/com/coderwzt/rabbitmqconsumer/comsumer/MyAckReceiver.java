@@ -26,8 +26,23 @@ public class MyAckReceiver implements ChannelAwareMessageListener {
       String messageId=msgMap.get("messageId");
       String messageData=msgMap.get("messageData");
       String createTime=msgMap.get("createTime");
-      System.out.println("  MyAckReceiver  messageId:"+messageId+"  messageData:"+messageData+"  createTime:"+createTime);
-      System.out.println("消费的主题消息来自："+message.getMessageProperties().getConsumerQueue());
+//      System.out.println("  MyAckReceiver  messageId:"+messageId+"  messageData:"+messageData+"  createTime:"+createTime);
+//      System.out.println("消费的主题消息来自："+message.getMessageProperties().getConsumerQueue());
+
+      if ("TestDirectQueue".equals(message.getMessageProperties().getConsumerQueue())){
+        System.out.println("消费的消息来自的队列名为："+message.getMessageProperties().getConsumerQueue());
+        System.out.println("消息成功消费到  messageId:"+messageId+"  messageData:"+messageData+"  createTime:"+createTime);
+        System.out.println("执行TestDirectQueue中的消息的业务处理流程......");
+
+      }
+
+      if ("fanout.A".equals(message.getMessageProperties().getConsumerQueue())){
+        System.out.println("消费的消息来自的队列名为："+message.getMessageProperties().getConsumerQueue());
+        System.out.println("消息成功消费到  messageId:"+messageId+"  messageData:"+messageData+"  createTime:"+createTime);
+        System.out.println("执行fanout.A中的消息的业务处理流程......");
+      }
+
+
       //true:将一次性ack所有小于deliveryTag的消息
       channel.basicAck(deliveryTag, true);
 //			channel.basicReject(deliveryTag, true);//为true会重新放回队列,，那么下次还会消费这消息
