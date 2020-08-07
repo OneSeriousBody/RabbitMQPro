@@ -1,0 +1,18 @@
+server:
+  port: 8021
+spring:
+  #\u7ED9\u9879\u76EE\u6765\u4E2A\u540D\u5B57
+  application:
+    name: rabbitmq-provider
+  #\u914D\u7F6ErabbitMq \u670D\u52A1\u5668
+  rabbitmq:
+    host: 47.112.180.196
+    port: 5672
+    username: root
+    password: root
+    #\u865A\u62DFhost \u53EF\u4EE5\u4E0D\u8BBE\u7F6E,\u4F7F\u7528server\u9ED8\u8BA4host
+    virtual-host: /
+    #确认消息已发送到交换机(Exchange)
+    publisher-confirms: true
+    #确认消息已发送到队列(Queue)
+    publisher-returns: true
