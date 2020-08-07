@@ -61,6 +61,7 @@ public class SendMessageController {
     return "ok";
   }
 
+  //消息推送成功,触发的是 ConfirmCallback 回调函数。
   @GetMapping("/sendFanoutMessage")
   public String sendFanoutMessage() {
     String messageId = String.valueOf(UUID.randomUUID());
@@ -87,4 +88,19 @@ public class SendMessageController {
     rabbitTemplate.convertAndSend("non-existent-exchange", "TestDirectRouting", map);
     return "ok";
   }
+
+  //消息推送到server，找到交换机了，但是没找到队列,触发的是 ConfirmCallback和RetrunCallback两个回调函数。
+  @GetMapping("/TestMessageAck2")
+  public String TestMessageAck2() {
+    String messageId = String.valueOf(UUID.randomUUID());
+    String messageData = "message: lonelyDirectExchange test message ";
+    String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    Map<String, Object> map = new HashMap<>();
+    map.put("messageId", messageId);
+    map.put("messageData", messageData);
+    map.put("createTime", createTime);
+    rabbitTemplate.convertAndSend("lonelyDirectExchange", "TestDirectRouting", map);
+    return "ok";
+  }
+
 }
