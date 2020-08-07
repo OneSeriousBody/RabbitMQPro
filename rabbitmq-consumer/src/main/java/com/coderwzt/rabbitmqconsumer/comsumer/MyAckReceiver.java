@@ -28,8 +28,9 @@ public class MyAckReceiver implements ChannelAwareMessageListener {
       String createTime=msgMap.get("createTime");
       System.out.println("  MyAckReceiver  messageId:"+messageId+"  messageData:"+messageData+"  createTime:"+createTime);
       System.out.println("消费的主题消息来自："+message.getMessageProperties().getConsumerQueue());
+      //true:将一次性ack所有小于deliveryTag的消息
       channel.basicAck(deliveryTag, true);
-//			channel.basicReject(deliveryTag, true);//为true会重新放回队列
+//			channel.basicReject(deliveryTag, true);//为true会重新放回队列,，那么下次还会消费这消息
     } catch (Exception e) {
       channel.basicReject(deliveryTag, false);
       e.printStackTrace();
