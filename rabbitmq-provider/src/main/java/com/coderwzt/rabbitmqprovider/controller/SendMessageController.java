@@ -1,5 +1,7 @@
 package com.coderwzt.rabbitmqprovider.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +18,13 @@ import java.util.UUID;
  * @Create on 2020/8/7.
  */
 @RestController
+@Api(tags = "RabbitMQ的Demo测试接口集")
 public class SendMessageController {
 
   @Autowired
   private RabbitTemplate rabbitTemplate;  //使用RabbitTemplate,这提供了接收/发送等等方法
 
+  @ApiOperation(value = "直连交换机")
   @GetMapping("/sendDirectMessage")
   public String sendDirectMessage() {
     String messageId = String.valueOf(UUID.randomUUID());
@@ -35,6 +39,7 @@ public class SendMessageController {
     return "ok";
   }
 
+  @ApiOperation(value = "主题交换机1")
   @GetMapping("/sendTopicMessage1")
   public String sendTopicMessage1() {
     String messageId = String.valueOf(UUID.randomUUID());
@@ -48,6 +53,7 @@ public class SendMessageController {
     return "ok";
   }
 
+  @ApiOperation(value = "主题交换机2")
   @GetMapping("/sendTopicMessage2")
   public String sendTopicMessage2() {
     String messageId = String.valueOf(UUID.randomUUID());
@@ -63,6 +69,7 @@ public class SendMessageController {
 
   //消息推送成功,触发的是 ConfirmCallback 回调函数。
   @GetMapping("/sendFanoutMessage")
+  @ApiOperation(value = "扇形交换机")
   public String sendFanoutMessage() {
     String messageId = String.valueOf(UUID.randomUUID());
     String messageData = "message: testFanoutMessage ";
@@ -77,6 +84,7 @@ public class SendMessageController {
 
   //消息推送到server，但是在server里找不到交换机,触发的是 ConfirmCallback 回调函数。
   @GetMapping("/TestMessageAck")
+  @ApiOperation(value = "测试生产者的回调函数1")
   public String TestMessageAck() {
     String messageId = String.valueOf(UUID.randomUUID());
     String messageData = "message: non-existent-exchange test message ";
@@ -91,6 +99,7 @@ public class SendMessageController {
 
   //消息推送到server，找到交换机了，但是没找到队列,触发的是 ConfirmCallback和RetrunCallback两个回调函数。
   @GetMapping("/TestMessageAck2")
+  @ApiOperation(value = "测试生产者的回调函数2")
   public String TestMessageAck2() {
     String messageId = String.valueOf(UUID.randomUUID());
     String messageData = "message: lonelyDirectExchange test message ";
